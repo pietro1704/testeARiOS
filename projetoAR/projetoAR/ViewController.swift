@@ -30,7 +30,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 	}
 	
 	@objc func handleTap(sender:UITapGestureRecognizer){
-		let node = f
+		
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
