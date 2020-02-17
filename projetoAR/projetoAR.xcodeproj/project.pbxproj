@@ -13,6 +13,7 @@
 		8DF2ED0423FADD8E00A89F8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2ED0223FADD8E00A89F8A /* Main.storyboard */; };
 		8DF2ED0623FADD9000A89F8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2ED0523FADD9000A89F8A /* Assets.xcassets */; };
 		8DF2ED0923FADD9000A89F8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2ED0723FADD9000A89F8A /* LaunchScreen.storyboard */; };
+		8DF2ED1123FADE8100A89F8A /* scene.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2ED1023FADE8100A89F8A /* scene.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		8DF2ED0523FADD9000A89F8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DF2ED0823FADD9000A89F8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DF2ED0A23FADD9000A89F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DF2ED1023FADE8100A89F8A /* scene.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scene.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				8DF2ECFE23FADD8E00A89F8A /* SceneDelegate.swift */,
 				8DF2ED0023FADD8E00A89F8A /* ViewController.swift */,
 				8DF2ED0223FADD8E00A89F8A /* Main.storyboard */,
+				8DF2ED1023FADE8100A89F8A /* scene.scnassets */,
 				8DF2ED0523FADD9000A89F8A /* Assets.xcassets */,
 				8DF2ED0723FADD9000A89F8A /* LaunchScreen.storyboard */,
 				8DF2ED0A23FADD9000A89F8A /* Info.plist */,
@@ -127,6 +130,7 @@
 			files = (
 				8DF2ED0923FADD9000A89F8A /* LaunchScreen.storyboard in Resources */,
 				8DF2ED0623FADD9000A89F8A /* Assets.xcassets in Resources */,
+				8DF2ED1123FADE8100A89F8A /* scene.scnassets in Resources */,
 				8DF2ED0423FADD8E00A89F8A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
