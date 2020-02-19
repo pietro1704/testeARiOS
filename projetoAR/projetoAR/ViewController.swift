@@ -17,6 +17,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 		super.viewDidLoad()
 		sceneView.delegate = self
 		sceneView.showsStatistics = true
+		sceneView.autoenablesDefaultLighting = true
+		
 		let scene = SCNScene(named: "scene.scnassets/scene.scn")!
 		
 		sceneView.scene = scene
@@ -38,9 +40,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 		
 		// Create a session configuration
 		let configuration = ARWorldTrackingConfiguration()
+		configuration.planeDetection = .horizontal
+		
 		
 		// Run the view's session
-		sceneView.session.run(configuration)
+		sceneView.session.run(configuration, options: [.removeExistingAnchors, .resetTracking])
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
