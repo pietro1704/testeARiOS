@@ -16,10 +16,15 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//let scene = SCNScene(named: "scene.scnassets/jenga.scn")!
-		//		let scene = SCNScene(named: "scene.scnassets/block.scn")!
-		//
-		//		sceneView.scene = scene
+		var nodeModel:SCNNode!
+		let nodeName = "box"
+		
+		let scene = SCNScene()
+		sceneView.scene = scene
+		
+		let modelScene = SCNScene(named: "scene.scnassets/block.scn")!
+		
+		nodeModel = modelScene.rootNode.childNode(withName: nodeName, recursively: true)
 		
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
 		
