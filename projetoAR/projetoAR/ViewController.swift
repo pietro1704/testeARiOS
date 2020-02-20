@@ -26,10 +26,6 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		let scene = SCNScene()
 		sceneView.scene = scene
 		
-		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-		
-		view.addGestureRecognizer(tapGesture)
-		
 		let coachingView = ARCoachingOverlayView(frame: self.view.frame)
 		coachingView.delegate = self
 		coachingView.goal = .horizontalPlane
@@ -38,27 +34,36 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		
 	}
 	
-	@objc func handleTap(sender:UITapGestureRecognizer){
-		let touchLocation = sender.location(in: sceneView)
-		let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		self.setTouch(touch: touches.first!)
+	}
+	
+	func setTouch(touch:UITouch){
+		let touchLocation = touch.location(in: sceneView)
+		let result = sceneView.hitTest(touchLocation)
 		
 		if !result.isEmpty{
 			guard let hitResult = result.first else{return}
-			createNode(nodeName: "box", hitTestResult:hitResult)
+			let node = hitResult.node.worldTransform
+			
+			let x = node.m41
+			let y = node.m42
+			let z = node.m43
+
+			
+			createNode(nodeName: "box",position: SCNVector3(x, y, z))
 
 		}
 	
 	}
 	
 	
-	func createNode(nodeName:String, hitTestResult: ARHitTestResult){
-		let worldTransform = hitTestResult.worldTransform
-		let position = SCNVector3Make(worldTransform.columns.3.x, worldTransform.columns.3.y, worldTransform.columns.3.z)
-		
+	func createNode(nodeName:String,position:SCNVector3){
 		let boxScene = SCNScene(named: "scene.scnassets/block.scn")!
-		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: true)!
+		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: false)!
 		
 		boxNode.position = position
+		
 		sceneView.scene.rootNode.addChildNode(boxNode)
 	}
 	
@@ -93,6 +98,7 @@ extension ViewController:ARSCNViewDelegate{
 		floor.physicsBody?.type = .static
 		
 		floor.eulerAngles.x = -.pi/2
+		floor.scale = SCNVector3(0.3, 0.3, 0.3)
 		return floor
 	}
 	
