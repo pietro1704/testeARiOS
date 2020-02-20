@@ -14,6 +14,8 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	
 	@IBOutlet weak var sceneView: ARSCNView!
 	
+	var didSelectPlane = false
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -40,31 +42,33 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	
 	func setTouch(touch:UITouch){
 		let touchLocation = touch.location(in: sceneView)
-		let result = sceneView.hitTest(touchLocation)
+		let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingGeometry)
 		
 		if !result.isEmpty{
 			guard let hitResult = result.first else{return}
-			let node = hitResult.node.worldTransform
+			let position = hitResult.worldTransform.columns.3
 			
-			let x = node.m41
-			let y = node.m42
-			let z = node.m43
-
+			let x = position.x
+			let y = position.y
+			let z = position.z
 			
 			createNode(nodeName: "box",position: SCNVector3(x, y, z))
-
 		}
-	
 	}
 	
 	
 	func createNode(nodeName:String,position:SCNVector3){
-		let boxScene = SCNScene(named: "scene.scnassets/block.scn")!
-		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: false)!
+		let boxScene = SCNScene(named: "scene.scnassets/jenga.scn")!
+//		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: false)!
+		let sceneNode = boxScene.rootNode.childNode(withName: "sceneNode", recursively: true)!
 		
-		boxNode.position = position
+		sceneNode.eulerAngles.x = .pi / 2
 		
-		sceneView.scene.rootNode.addChildNode(boxNode)
+		let selectedPlane = sceneView.scene.rootNode.childNode(withName: "floor", recursively: true)!
+		selectedPlane.addChildNode(sceneNode)
+//		plane.addChildNode(boxNode)
+		
+		didSelectPlane = true
 	}
 	
 	func setConfiguration(){
@@ -96,6 +100,8 @@ extension ViewController:ARSCNViewDelegate{
 		floor.geometry?.firstMaterial?.isDoubleSided = true
 		floor.position = SCNVector3(anchor.center.x, anchor.center.y, anchor.center.z)
 		floor.physicsBody?.type = .static
+	
+		floor.physicsBody?.isAffectedByGravity = true
 		
 		floor.eulerAngles.x = -.pi/2
 		floor.scale = SCNVector3(0.3, 0.3, 0.3)
@@ -111,16 +117,20 @@ extension ViewController:ARSCNViewDelegate{
 	}
 	
 	func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-		guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-		let floor = createFloor(anchor: planeAnchor)
-		node.addChildNode(floor)
+		if !didSelectPlane{
+			guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+			let floor = createFloor(anchor: planeAnchor)
+			node.addChildNode(floor)
+		}
 	}
 	
 	func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-		guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-		removeNode(named: "floor")
-		let floor = createFloor(anchor: planeAnchor)
-		node.addChildNode(floor)
+		if !didSelectPlane{
+			guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+			removeNode(named: "floor")
+			let floor = createFloor(anchor: planeAnchor)
+			node.addChildNode(floor)
+		}
 	}
 	
 	func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
