@@ -11,20 +11,20 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
-	
+
 	@IBOutlet weak var sceneView: ARSCNView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		var nodeModel:SCNNode!
-		let nodeName = "box"
+		setConfiguration()
+		sceneView.delegate = self
+		sceneView.session.delegate = self
+		sceneView.showsStatistics = true
+		
 		
 		let scene = SCNScene()
 		sceneView.scene = scene
-		
-		let modelScene = SCNScene(named: "scene.scnassets/block.scn")!
-		
-		nodeModel = modelScene.rootNode.childNode(withName: nodeName, recursively: true)
 		
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
 		
@@ -39,16 +39,24 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	}
 	
 	@objc func handleTap(sender:UITapGestureRecognizer){
+		let touchLocation = sender.location(in: sceneView)
+		let hitTest = sceneView.hitTest(touchLocation)
+		if !hitTest.isEmpty{
+			let result = hitTest.first!
+			let name = result.node
+			let geometry = result.node.geometry
+			print("tapped \(name) eith geometry \(geometry)")
+			
+		}
 		
 	}
 	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		setConfiguration()
-		sceneView.delegate = self
-		sceneView.session.delegate = self
-		sceneView.showsStatistics = true
+	
+	func createNode(nodeName:String, position: SCNVector3){
+		let boxScene = SCNScene(named: "scene.scnassets/block.scn")!
+		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: true)!
+		boxNode.position = position
+		sceneView.scene.rootNode.addChildNode(boxNode)
 		
 	}
 	
