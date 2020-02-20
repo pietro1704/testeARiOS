@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
-
+	
 	@IBOutlet weak var sceneView: ARSCNView!
 	
 	override func viewDidLoad() {
@@ -40,14 +40,12 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	
 	@objc func handleTap(sender:UITapGestureRecognizer){
 		let touchLocation = sender.location(in: sceneView)
-		let hitTest = sceneView.hitTest(touchLocation)
-		if !hitTest.isEmpty{
-			let result = hitTest.first!
-			let name = result.node
-			let geometry = result.node.geometry
-			print("tapped \(name) eith geometry \(geometry)")
-			
-		}
+		let result = sceneView.hitTest(touchLocation, types: .existingPlane)
+		
+		guard let hitResult = result.last else{return}
+		let hitTransform = SCNMatrix4(hitResult.worldTransform)
+		let hitVector = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
+		createNode(nodeName: "box", position: hitVector)
 		
 	}
 	
@@ -57,7 +55,6 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: true)!
 		boxNode.position = position
 		sceneView.scene.rootNode.addChildNode(boxNode)
-		
 	}
 	
 	func setConfiguration(){
@@ -88,6 +85,7 @@ extension ViewController:ARSCNViewDelegate{
 		floor.geometry?.firstMaterial?.diffuse.contents = UIColor.green
 		floor.geometry?.firstMaterial?.isDoubleSided = true
 		floor.position = SCNVector3(anchor.center.x, anchor.center.y, anchor.center.z)
+		floor.physicsBody?.type = .static
 		
 		floor.eulerAngles.x = -.pi/2
 		return floor
