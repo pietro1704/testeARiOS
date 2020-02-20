@@ -40,19 +40,24 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	
 	@objc func handleTap(sender:UITapGestureRecognizer){
 		let touchLocation = sender.location(in: sceneView)
-		let result = sceneView.hitTest(touchLocation, types: .existingPlane)
+		let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
 		
-		guard let hitResult = result.last else{return}
-		let hitTransform = SCNMatrix4(hitResult.worldTransform)
-		let hitVector = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
-		createNode(nodeName: "box", position: hitVector)
-		
+		if !result.isEmpty{
+			guard let hitResult = result.first else{return}
+			createNode(nodeName: "box", hitTestResult:hitResult)
+
+		}
+	
 	}
 	
 	
-	func createNode(nodeName:String, position: SCNVector3){
+	func createNode(nodeName:String, hitTestResult: ARHitTestResult){
+		let worldTransform = hitTestResult.worldTransform
+		let position = SCNVector3Make(worldTransform.columns.3.x, worldTransform.columns.3.y, worldTransform.columns.3.z)
+		
 		let boxScene = SCNScene(named: "scene.scnassets/block.scn")!
 		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: true)!
+		
 		boxNode.position = position
 		sceneView.scene.rootNode.addChildNode(boxNode)
 	}
