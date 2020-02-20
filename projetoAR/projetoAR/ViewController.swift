@@ -70,11 +70,13 @@ extension ViewController:ARSCNViewDelegate{
 	
 	func createFloor(anchor:ARPlaneAnchor)->SCNNode{
 		let floor = SCNNode()
-		floor.eulerAngles = SCNVector3(90,0,0)
+		floor.name = "floor"
 		floor.geometry = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
 		floor.geometry?.firstMaterial?.diffuse.contents = UIColor.green
 		floor.geometry?.firstMaterial?.isDoubleSided = true
 		floor.position = SCNVector3(anchor.center.x, anchor.center.y, anchor.center.z)
+		
+		floor.eulerAngles.x = -.pi/2
 		return floor
 	}
 	
@@ -101,6 +103,7 @@ extension ViewController:ARSCNViewDelegate{
 	
 	func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
 		guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+		print("plano removido \(planeAnchor.extent)")
 		removeNode(named: "floor")
 	}
 }
