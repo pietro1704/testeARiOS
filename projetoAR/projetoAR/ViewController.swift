@@ -10,7 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
+class ViewController: UIViewController{
 	
 	@IBOutlet weak var sceneView: ARSCNView!
 	
@@ -27,13 +27,6 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		
 		let scene = SCNScene()
 		sceneView.scene = scene
-		
-		let coachingView = ARCoachingOverlayView(frame: self.view.frame)
-		coachingView.delegate = self
-		coachingView.goal = .horizontalPlane
-		coachingView.activatesAutomatically = true
-		self.view.addSubview(coachingView)
-		
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -52,7 +45,7 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 			let y = position.y
 			let z = position.z
 			
-			createNode(scene: SCNScene(named: "scene.scnassets/jenga.scn")!, nodeName: "tower",position: SCNVector3(x, y, z))
+			createNode(scene: SCNScene(named: "scene.scnassets/jenga.scn")!, nodeName: "sceneNode",position: SCNVector3(x, y, z))
 		}
 	}
 	
@@ -62,7 +55,6 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		
 		let selectedPlane = sceneView.scene.rootNode.childNode(withName: "floor", recursively: true)!
 		selectedPlane.addChildNode(node)
-		
 		
 		didSelectPlane = true
 	}
@@ -94,7 +86,7 @@ extension ViewController:ARSCNViewDelegate{
 	
 	func createFloor(anchor:ARPlaneAnchor)->SCNNode{
 		let floor = Plane(anchor: anchor)
-		floor.scale = SCNVector3(0.01, 0.01, 0.01)
+	//	floor.scale = SCNVector3(0.1, 0.1, 0.1)
 		return floor
 	}
 	
