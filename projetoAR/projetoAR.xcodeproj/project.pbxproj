@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D28FDAD23FFF9A6004E57E5 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D28FDAC23FFF9A6004E57E5 /* Plane.swift */; };
 		8DF2ECFD23FADD8E00A89F8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF2ECFC23FADD8E00A89F8A /* AppDelegate.swift */; };
 		8DF2ECFF23FADD8E00A89F8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF2ECFE23FADD8E00A89F8A /* SceneDelegate.swift */; };
 		8DF2ED0123FADD8E00A89F8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF2ED0023FADD8E00A89F8A /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D28FDAC23FFF9A6004E57E5 /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		8DF2ECF923FADD8E00A89F8A /* projetoAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = projetoAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF2ECFC23FADD8E00A89F8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DF2ECFE23FADD8E00A89F8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				8DF2ECFE23FADD8E00A89F8A /* SceneDelegate.swift */,
 				8DF2ED0023FADD8E00A89F8A /* ViewController.swift */,
 				8DF2ED0223FADD8E00A89F8A /* Main.storyboard */,
+				8D28FDAC23FFF9A6004E57E5 /* Plane.swift */,
 				8DF2ED1023FADE8100A89F8A /* scene.scnassets */,
 				8DF2ED0523FADD9000A89F8A /* Assets.xcassets */,
 				8DF2ED0723FADD9000A89F8A /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 			files = (
 				8DF2ED0123FADD8E00A89F8A /* ViewController.swift in Sources */,
 				8DF2ECFD23FADD8E00A89F8A /* AppDelegate.swift in Sources */,
+				8D28FDAD23FFF9A6004E57E5 /* Plane.swift in Sources */,
 				8DF2ECFF23FADD8E00A89F8A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

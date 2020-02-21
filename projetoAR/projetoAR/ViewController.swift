@@ -42,7 +42,7 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 	
 	func setTouch(touch:UITouch){
 		let touchLocation = touch.location(in: sceneView)
-		let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingGeometry)
+		let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
 		
 		if !result.isEmpty{
 			guard let hitResult = result.first else{return}
@@ -52,21 +52,17 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 			let y = position.y
 			let z = position.z
 			
-			createNode(nodeName: "box",position: SCNVector3(x, y, z))
+			createNode(scene: SCNScene(named: "scene.scnassets/jenga.scn")!, nodeName: "tower",position: SCNVector3(x, y, z))
 		}
 	}
 	
 	
-	func createNode(nodeName:String,position:SCNVector3){
-		let boxScene = SCNScene(named: "scene.scnassets/jenga.scn")!
-//		let boxNode = boxScene.rootNode.childNode(withName: nodeName, recursively: false)!
-		let sceneNode = boxScene.rootNode.childNode(withName: "sceneNode", recursively: true)!
-		
-		sceneNode.eulerAngles.x = .pi / 2
+	func createNode(scene:SCNScene, nodeName:String,position:SCNVector3){
+		let node = scene.rootNode.childNode(withName: nodeName, recursively: true)!
 		
 		let selectedPlane = sceneView.scene.rootNode.childNode(withName: "floor", recursively: true)!
-		selectedPlane.addChildNode(sceneNode)
-//		plane.addChildNode(boxNode)
+		selectedPlane.addChildNode(node)
+		
 		
 		didSelectPlane = true
 	}
@@ -88,23 +84,17 @@ class ViewController: UIViewController, ARCoachingOverlayViewDelegate{
 		// Pause the view's session
 		sceneView.session.pause()
 	}
+	@IBAction func clearAllTapped(_ sender: Any) {
+		removeNode(named: "floor")
+		didSelectPlane = false
+	}
 }
 
 extension ViewController:ARSCNViewDelegate{
 	
 	func createFloor(anchor:ARPlaneAnchor)->SCNNode{
-		let floor = SCNNode()
-		floor.name = "floor"
-		floor.geometry = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
-		floor.geometry?.firstMaterial?.diffuse.contents = UIColor.green
-		floor.geometry?.firstMaterial?.isDoubleSided = true
-		floor.position = SCNVector3(anchor.center.x, anchor.center.y, anchor.center.z)
-		floor.physicsBody?.type = .static
-	
-		floor.physicsBody?.isAffectedByGravity = true
-		
-		floor.eulerAngles.x = -.pi/2
-		floor.scale = SCNVector3(0.3, 0.3, 0.3)
+		let floor = Plane(anchor: anchor)
+		floor.scale = SCNVector3(0.01, 0.01, 0.01)
 		return floor
 	}
 	
